@@ -3,11 +3,34 @@ import java.util.*;
 
  class Main {
 
+     static void combinationUtil(String deckOfCards[], String data[], int start, int end, int index, int size) {
+         if (index == size) {
+             for (int j=0; j<size; j++) {
+                 System.out.print(data[j] + " ");
+                 System.out.println("");
+                 return;
+             }
+         }
+
+         for (int i = start; i <= end && end-1 + 1 >= size-index; i++) {
+             data[index] = deckOfCards[i];
+             combinationUtil(deckOfCards, data, i+1, end, index+1, size);
+         }
+     }
+
+     static void printCombination(String deckOfCards[], int n, int size) {
+         String data[] = new String[size];
+
+         combinationUtil(deckOfCards, data, 0, n-1, 0, size);
+     }
 
 
      public static void main(String[] args) {
 
          List<String> deckOfCards = new ArrayList<String>();
+         int size = 5;
+         int n = deckOfCards.size();
+         printCombination(deckOfCards, n, size);
 
 
          String AceOfSpades = "As";
@@ -150,7 +173,16 @@ import java.util.*;
          // removing the cards that are in the hand from the deck
 
 
+
+
+
+
+
+
+
     }
+
+
 
 }
 
