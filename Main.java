@@ -1,7 +1,7 @@
 package com.company;
 import java.util.*;
 
- class Main {
+public class Main {
 
      static void combinationUtil(String deckOfCards[], String data[], int start, int end, int index, int size) {
          if (index == size) {
@@ -27,10 +27,8 @@ import java.util.*;
 
      public static void main(String[] args) {
 
-         List<String> deckOfCards = new ArrayList<String>();
-         int size = 5;
-         int n = deckOfCards.size();
-         printCombination(deckOfCards, n, size);
+         List<String> deckOfCards = new ArrayList<String>(); // something about this having to be a list and not array
+
 
 
          String AceOfSpades = "As";
@@ -172,7 +170,10 @@ import java.util.*;
          }
          // removing the cards that are in the hand from the deck
 
-
+         int size = 5;
+         int n = deckOfCards.size();
+         Object[] deck = deckOfCards.toArray();
+         printCombination(deck, n, size);
 
 
 
