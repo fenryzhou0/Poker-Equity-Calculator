@@ -3,32 +3,32 @@ import java.util.*;
 
 public class Main {
 
-     static void combinationUtil(String deckOfCards[], String data[], int start, int end, int index, int size) {
-         if (index == size) {
-             for (int j=0; j<size; j++) {
-                 System.out.print(data[j] + " ");
-                 System.out.println("");
-                 return;
-             }
-         }
+    static void combinationUtil(Object deck[], Object data[], int start, int end, int index, int r){
+        if (index == r) {
+            for (int j = 0; j < r; j++) {
+                System.out.print(data[j]+" ");
+            }
+            System.out.println("");
 
-         for (int i = start; i <= end && end-1 + 1 >= size-index; i++) {
-             data[index] = deckOfCards[i];
-             combinationUtil(deckOfCards, data, i+1, end, index+1, size);
-         }
-     }
+            return;
+        }
+        for (int i = start; i <= end && end - i + 1 >= r - index; i++) {
+            data[index] = deck[i];
+            combinationUtil(deck, data, i + 1, end, index + 1, r);
+        }
 
-     static void printCombination(String deckOfCards[], int n, int size) {
-         String data[] = new String[size];
+    }
 
-         combinationUtil(deckOfCards, data, 0, n-1, 0, size);
-     }
+    static void printCombination(Object deck[], int n, int r) {
+        Object data[] = new Object[r];
+        combinationUtil(deck, data, 0, n-1, 0, r);
+    }
 
 
-     public static void main(String[] args) {
+    public static void main(String[] args) {
 
-         List<String> deckOfCards = new ArrayList<String>(); // something about this having to be a list and not array
-
+         ArrayList<String> deckOfCards = new ArrayList<String>(); // something about this having to be a list and not array
+         //String deck[] = new String [52]
 
 
          String AceOfSpades = "As";
@@ -83,6 +83,7 @@ public class Main {
          String TwoOfClubs = "2c";
          String TwoOfDiamonds = "2d";
          String TwoOfHearts = "2h";
+
 
          deckOfCards.add(AceOfSpades);
          deckOfCards.add(AceOfClubs);
@@ -166,15 +167,16 @@ public class Main {
              if (hand2card2.equals(deckOfCards.get(i))) {
                  deckOfCards.remove(deckOfCards.get(i));
              }
-             System.out.println(deckOfCards.get(i));
+
          }
          // removing the cards that are in the hand from the deck
 
-         int size = 5;
-         int n = deckOfCards.size();
-         Object[] deck = deckOfCards.toArray();
-         printCombination(deck, n, size);
 
+        Object[] deck = deckOfCards.toArray();
+        int n = deck.length;
+        int combos = 5;
+        String data[] = new String[combos];
+        printCombination(deck, n, combos);
 
 
 
