@@ -32,6 +32,7 @@ public class EquityCalculator {
         ec.convertInteger(hand1s , hand2s, hand1i, hand2i);    
 
     }
+    
     public void convertInteger(Object hand1s[][], Object hand2s[][], int hand1i[][], int hand2i[][]) {
     	//converting first hand's card values 2 through 10 to integers
         if(hand1s[0][0] == "2" || hand1s[0][0] == "3" || hand1s[0][0] == "4" || hand1s[0][0] == "5" || hand1s[0][0] == "6" || hand1s[0][0] == "7" || hand1s[0][0] == "8" || hand1s[0][0] == "9" || hand1s[0][0] == "10")  {
@@ -283,7 +284,10 @@ public class EquityCalculator {
             }
         }
     }
-
+    
+    public void sort() {
+    	
+    }
 
 
 }
