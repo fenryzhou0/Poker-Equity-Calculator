@@ -8,9 +8,9 @@ public class EquityCalculator {
     	
     	//fullDeck is all 52 cards in a standard deck
         final int[][] fullDeck = new int[][]{{2,1},{3,1},{4,1},{5,1},{6,1},{7,1},{8,1},{9,1},{10,1},{11,1},{12,1},{13,1},{14,1},{2,2},{3,2},{4,2},{5,2},{6,2},{7,2},{8,2},{9,2},{10,2},{11,2},{12,2},{13,2},{14,2},{2,3},{3,3},{4,3},{5,3},{6,3},{7,3},{8,3},{9,3},{10,3},{11,3},{12,3},{13,3},{14,3},{2,4},{3,4},{4,4},{5,4},{6,4},{7,4},{8,4},{9,4},{10,4},{11,4},{12,4},{13,4},{14,4}};
-        
-        //
         int[][] tempDeck = fullDeck;
+        
+        EquityCalculator ec = new EquityCalculator();
         
         //first taking input of two cards and putting them into two String arrays respectively
         Object[][] hand1s = new Object[2][2];
@@ -20,18 +20,16 @@ public class EquityCalculator {
         int[][] hand2i = new int[2][2];
 
         Scanner scan = new Scanner(System.in);
-        //taking input of the two hands
         System.out.println("Input the first card of the first hand (Card value _ Suit): ");
-            hand1s[0] = scan.nextLine().split(" ");
-
+        hand1s[0] = scan.nextLine().split(" ");
         System.out.println("Input the second card of the first hand: ");
-            hand1s[1] = scan.nextLine().split(" ");
-
+        hand1s[1] = scan.nextLine().split(" ");
         System.out.println("Input the first card of the second hand: ");
-            hand2s[0] = scan.nextLine().split(" ");
-
+        hand2s[0] = scan.nextLine().split(" ");
         System.out.println("Input the second card of the second hand: ");
-            hand2s[1] = scan.nextLine().split(" ");
+        hand2s[1] = scan.nextLine().split(" ");
+            
+        ec.convertInteger(hand1s , hand2s, hand1i, hand2i);    
 
     }
     public void convertInteger(Object hand1s[][], Object hand2s[][], int hand1i[][], int hand2i[][]) {
