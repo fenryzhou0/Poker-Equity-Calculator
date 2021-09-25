@@ -29,16 +29,13 @@ public class EquityCalculator {
         System.out.println("Input the second card of the second hand: ");
         hand2s[1] = scan.nextLine().split(" ");
            
-        System.out.println(hand1s);
-        System.out.println(hand2s);
-        System.out.println(hand1i);
-        System.out.println(hand2i);
-        System.out.println(fullDeck);
+        
         ec.convertInteger(hand1s , hand2s, hand1i, hand2i);
-       /* System.out.println(hand1s);
-        System.out.println(hand2s);
-        System.out.println(hand1i);
-        System.out.println(hand2i); */
+        System.out.println(Arrays.deepToString(hand1s));
+        System.out.println(Arrays.deepToString(hand2s));
+        System.out.println(Arrays.deepToString(hand1i)); // not converting to integers
+        System.out.println(Arrays.deepToString(hand2i));
+        System.out.println(Arrays.deepToString(fullDeck));
     }
     
     public void convertInteger(Object hand1s[][], Object hand2s[][], int hand1i[][], int hand2i[][]) {
@@ -46,7 +43,7 @@ public class EquityCalculator {
         if(hand1s[0][0] == "2" || hand1s[0][0] == "3" || hand1s[0][0] == "4" || hand1s[0][0] == "5" || hand1s[0][0] == "6" || hand1s[0][0] == "7" || hand1s[0][0] == "8" || hand1s[0][0] == "9" || hand1s[0][0] == "10")  {
         	hand1i[0][0] = (int) hand1s[0][0];
         	//converting card suit into integer representation with 1 = spade, 2 = club, 3 = heart, 4 = diamond
-            if(hand1s[0][1] == "Spade")  {
+            if(hand1s[0][1].equals(" Spade"))  {
                 hand1i[0][1] = 1;
             }   else if(hand1s[0][1] == "Club")    {
                 hand1i[0][1] = 2;
