@@ -28,9 +28,17 @@ public class EquityCalculator {
         hand2s[0] = scan.nextLine().split(" ");
         System.out.println("Input the second card of the second hand: ");
         hand2s[1] = scan.nextLine().split(" ");
-            
-        ec.convertInteger(hand1s , hand2s, hand1i, hand2i);    
-
+           
+        System.out.println(hand1s);
+        System.out.println(hand2s);
+        System.out.println(hand1i);
+        System.out.println(hand2i);
+        System.out.println(fullDeck);
+        ec.convertInteger(hand1s , hand2s, hand1i, hand2i);
+       /* System.out.println(hand1s);
+        System.out.println(hand2s);
+        System.out.println(hand1i);
+        System.out.println(hand2i); */
     }
     
     public void convertInteger(Object hand1s[][], Object hand2s[][], int hand1i[][], int hand2i[][]) {
@@ -285,10 +293,10 @@ public class EquityCalculator {
         }
     }
     
-    public void sort() {
+    public void subtract() {
     	
     }
-
+   
 
 }
 
