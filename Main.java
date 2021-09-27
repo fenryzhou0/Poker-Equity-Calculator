@@ -41,7 +41,7 @@ public class EquityCalculator {
     public void convertInteger(Object hand1s[][], Object hand2s[][], int hand1i[][], int hand2i[][]) {
     	//converting first hand's card values 2 through 10 to integers
         if(hand1s[0][0] == "2" || hand1s[0][0] == "3" || hand1s[0][0] == "4" || hand1s[0][0] == "5" || hand1s[0][0] == "6" || hand1s[0][0] == "7" || hand1s[0][0] == "8" || hand1s[0][0] == "9" || hand1s[0][0] == "10")  {
-        	hand1i[0][0] = (int) hand1s[0][0];
+        	hand1i[0][0] =  Integer.parseInt(hand1i);
         	//converting card suit into integer representation with 1 = spade, 2 = club, 3 = heart, 4 = diamond
             if(hand1s[0][1].equals(" Spade"))  {
                 hand1i[0][1] = 1;
