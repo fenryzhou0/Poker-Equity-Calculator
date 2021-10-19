@@ -1,0 +1,68 @@
+class Cards(c):
+    
+    def __init__(self, value, suit):
+        self.value = value
+        self.suit = suit
+
+        
+    
+    
+    def takeCardInputs():
+        cardOneValueMenu = "Enter the number for Card One's Value:\r\n"
+        cardOneSuitMenu = "Enter the suit for Card One:\r\n"
+        cardTwoValueMenu = "Enter the number for Card Two's Value:\r\n"
+        cardTwoSuitMenu = "Enter the suit for Card Two:\r\n"
+        
+        
+        cardOneValue = input(cardOneValueMenu)
+        if cardOneValue == "Jack":
+            cardOneValue = 11
+        if cardOneValue == "Queen":
+            cardOneValue = 12
+        if cardOneValue == "King":
+            cardOneValue = 13
+        if cardOneValue == "Ace":
+            cardOneValue = 14
+        
+        
+        cardOneSuit = input(cardOneSuitMenu)
+        if cardOneSuit == "Spade":
+            cardOneSuit = 1
+        if cardOneSuit == "Club":
+            cardOneSuit = 2
+        if cardOneSuit == "Heart":
+            cardOneSuit = 3
+        if cardOneSuit == "Diamond":
+            cardOneSuit = 4
+        
+        cardTwoValue = input(cardTwoValueMenu)
+        if cardTwoValue == "Jack":
+            cardTwoValue = 11
+        if cardTwoValue == "Queen":
+            cardTwoValue = 12
+        if cardTwoValue == "King":
+            cardTwoValue = 13
+        if cardTwoValue == "Ace":
+            cardTwoValue = 14
+            
+        cardTwoSuit = input(cardTwoSuitMenu)
+        if cardTwoSuit == "Spade":
+            cardTwoSuit = 1
+        if cardTwoSuit == "Club":
+            cardTwoSuit = 2
+        if cardTwoSuit == "Heart":
+            cardTwoSuit = 3
+        if cardTwoSuit == "Diamond":
+            cardTwoSuit = 4
+            
+        userOneCardOne = Cards(cardOneValue, cardOneSuit)
+        userOneCardTwo = Cards(cardTwoValue, cardTwoSuit)
+        userTwoCardOne = Cards()
+        userTwoCardTwo = Cards()
+        
+
+    def createCardDeck():
+    
+
+
+        
