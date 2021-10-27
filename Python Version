@@ -1,6 +1,5 @@
 class Card:
 
-
     def __init__(self, value, suit):
         self.value = value
         self.suit = suit
@@ -8,86 +7,79 @@ class Card:
     def printCard(self):
         print(self.value, self.suit)
 
-    def getHandOne(self):
-        cardOneValueMenu = "Enter the number for Card One's Value:\r\n"
-        cardOneSuitMenu = "Enter the suit for Card One:\r\n"
-        cardTwoValueMenu = "Enter the number for Card Two's Value:\r\n"
-        cardTwoSuitMenu = "Enter the suit for Card Two:\r\n"
+    def getCardValue(self):
+        cardOneValueMenu = "Enter the card's value:\r\n"
+        cardValue = input(cardOneValueMenu)
+        if cardValue == "Jack":
+            cardValue = 11
+        if cardValue == "Queen":
+            cardValue = 12
+        if cardValue == "King":
+            cardValue = 13
+        if cardValue == "Ace":
+            cardValue = 14
+        return cardValue
 
-        cardOneValue = input(cardOneValueMenu)
-        if cardOneValue == "Jack":
-            cardOneValue = 11
-        if cardOneValue == "Queen":
-            cardOneValue = 12
-        if cardOneValue == "King":
-            cardOneValue = 13
-        if cardOneValue == "Ace":
-            cardOneValue = 14
-
-        cardOneSuit = input(cardOneSuitMenu)
-        if cardOneSuit == "Spade":
-            cardOneSuit = 1
-        if cardOneSuit == "Club":
-            cardOneSuit = 2
-        if cardOneSuit == "Heart":
-            cardOneSuit = 3
-        if cardOneSuit == "Diamond":
-            cardOneSuit = 4
-
-        cardTwoValue = input(cardTwoValueMenu)
-        if cardTwoValue == "Jack":
-            cardTwoValue = 11
-        if cardTwoValue == "Queen":
-            cardTwoValue = 12
-        if cardTwoValue == "King":
-            cardTwoValue = 13
-        if cardTwoValue == "Ace":
-            cardTwoValue = 14
-
-        cardTwoSuit = input(cardTwoSuitMenu)
-        if cardTwoSuit == "Spade":
-            cardTwoSuit = 1
-        if cardTwoSuit == "Club":
-            cardTwoSuit = 2
-        if cardTwoSuit == "Heart":
-            cardTwoSuit = 3
-        if cardTwoSuit == "Diamond":
-            cardTwoSuit = 4
-
-        
-        
+    def getCardSuit(self):
+        cardOneSuitMenu = "Enter the card's suit: \r\n"
+        cardSuit = input(cardOneSuitMenu)
+        if cardSuit == "Spades":
+            cardSuit = 1
+        if cardSuit == "Clubs":
+            cardSuit = 2
+        if cardSuit == "Hearts":
+            cardSuit = 3
+        if cardSuit == "Diamonds":
+            cardSuit = 4
+        return cardSuit
 
 
 class Deck:
     def __init__(self):
         self.cards = []
         self.createDeck()
-        
 
-        
+
     def createDeck(self):
-        for s in ["Spades", "Clubs", "Diamonds", "Hearts"]:
-            for v in range(1, 15):
-                if v == 11:
-                    v = "Jack"
-                if v == 12:
-                    v = "Queen"
-                if v == 13:
-                    v = "King"
-                if v == 14: 
-                    v = "Ace"
+        for s in range(1, 5):
+            for v in range(2, 16):
                 self.cards.append(Card(v, s))
 
     def printDeck(self):
         for c in self.cards:
             c.printCard()
 
+    def removeDealtCard(self, card):
+        for c in self.cards:
+            if int(card.value) == int(c.value) and int(card.suit) == int(c.suit):
+                self.cards.remove(c)
 
+#Creating First Hand
+tempCard = Card("tempValue", "tempSuit")
+print("First Hand:")
+print("First Card Info:")
+handOneCardOneValue = tempCard.getCardValue()
+handOneCardOneSuit = tempCard.getCardSuit()
+handOneCardOne = Card(handOneCardOneValue, handOneCardOneSuit)
+print("Second Hand Info:")
+handOneCardTwoValue = tempCard.getCardValue()
+handOneCardTwoSuit = tempCard.getCardSuit()
+handOneCardTwo = Card(handOneCardTwoValue, handOneCardTwoSuit)
 
+#Creating Second Hand
+print("Second Hand:")
+print("First Card Info:")
+handTwoCardOneValue = tempCard.getCardValue()
+handTwoCardOneSuit = tempCard.getCardSuit()
+handTwoCardOne = Card(handTwoCardOneValue, handTwoCardOneSuit)
+print("Second Hand Info:")
+handTwoCardTwoValue = tempCard.getCardValue()
+handTwoCardTwoSuit = tempCard.getCardSuit()
+handTwoCardTwo = Card(handTwoCardTwoValue, handTwoCardTwoSuit)
 
-        
-
-    
-
-
-        
+#Removing those cards from the deck
+deck = Deck()
+deck.removeDealtCard(handOneCardOne)
+deck.removeDealtCard(handOneCardTwo)
+deck.removeDealtCard(handTwoCardOne)
+deck.removeDealtCard(handTwoCardTwo)
