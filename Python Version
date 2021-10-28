@@ -1,3 +1,5 @@
+import itertools
+
 class Card:
 
     def __init__(self, value, suit):
@@ -54,6 +56,12 @@ class Deck:
             if int(card.value) == int(c.value) and int(card.suit) == int(c.suit):
                 self.cards.remove(c)
 
+    def calculateOutcomes(self):
+        outcomesList = list(itertools.combinations(self.cards, 5))
+        for c in outcomesList:
+            c.print()
+
+
 #Creating First Hand
 tempCard = Card("tempValue", "tempSuit")
 print("First Hand:")
@@ -83,3 +91,5 @@ deck.removeDealtCard(handOneCardOne)
 deck.removeDealtCard(handOneCardTwo)
 deck.removeDealtCard(handTwoCardOne)
 deck.removeDealtCard(handTwoCardTwo)
+
+deck.calculateOutcomes()
