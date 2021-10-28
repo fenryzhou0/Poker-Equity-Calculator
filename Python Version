@@ -60,6 +60,7 @@ class Deck:
         outcomesList = list(itertools.combinations(self.cards, 5))
         for c in outcomesList:
             c.print()
+        #implement way to calculate winning hands based on each outcome
 
 
 #Creating First Hand
