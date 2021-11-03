@@ -37,6 +37,9 @@ class Card:
 
 
 class Deck:
+    handOneWins = 0
+    handTwoWins = 0
+    splits = 0
     def __init__(self):
         self.cards = []
         self.createDeck()
@@ -58,10 +61,42 @@ class Deck:
 
     def calculateOutcomes(self):
         outcomesList = list(itertools.combinations(self.cards, 5))
-        for c in list(outcomesList):
-            for i in list(c):
-                i.printCard()
+        return outcomesList
+        #for c in list(outcomesList):
+           # for i in list(c):
+            #    i.printCard()
         #implement way to calculate winning hands based on each outcome
+
+    def checkRoyalFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+        #creating list of suits for first hand
+        for c in list(outcomesList):
+            handOneSuits = []
+            for i in list(c):
+                handOneSuits.append(i.suit)
+            handOneSuits.append(handOneCardOne.suit)
+            handOneSuits.append(handOneCardTwo.suit)
+            print(handOneSuits)
+
+        #checking if first hand has 5 of same suit
+        fiveSuited = False
+        for a in range(1, 5):
+            if handOneSuits.count(a) >= 5:
+                fiveSuited = True
+
+        #checking if first hand has royal flush
+        if (fiveSuited == True):
+            #Creating list of values for first hand
+            for c in list(outcomesList):
+                handOneValues = []
+                for i in list(c):
+                    handOneValues.append(i.value)
+                handOneValues.append(handOneCardOne.value)
+                handOneValues.append(handOneCardTwo.value)
+                #find some way to get rid of cards in the list that arne't suited
+
+
+
+
 
 
 #Creating First Hand
@@ -94,4 +129,8 @@ deck.removeDealtCard(handOneCardTwo)
 deck.removeDealtCard(handTwoCardOne)
 deck.removeDealtCard(handTwoCardTwo)
 
-deck.calculateOutcomes()
+#running all possible outcomes
+outcomes = deck.calculateOutcomes()
+
+deck.checkRoyalFlush(handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomes)
+
