@@ -58,8 +58,9 @@ class Deck:
 
     def calculateOutcomes(self):
         outcomesList = list(itertools.combinations(self.cards, 5))
-        for c in outcomesList:
-            c.print()
+        for c in list(outcomesList):
+            for i in list(c):
+                i.printCard()
         #implement way to calculate winning hands based on each outcome
 
 
