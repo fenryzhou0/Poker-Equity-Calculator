@@ -68,40 +68,39 @@ class Deck:
         #implement way to calculate winning hands based on each outcome
 
     def checkRoyalFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+        handOneRoyalFlush = False
+        handTwoRoyalFlush = False
         #creating list of suits for first hand
-        for c in list(outcomesList):
+        for a in list(outcomesList):
             handOneSuits = []
-            handOneCards = []
-            for i in list(c):
+            handOneViableCards = []
+            handOneValues = []
+            for i in list(a):
                 handOneSuits.append(i.suit)
                 handOneSuits.append(i)
             handOneSuits.append(handOneCardOne.suit)
             handOneSuits.append(handOneCardTwo.suit)
-            handOneCards.append(handOneCardOne)
-            handOneCards.append(handOneCardTwo)
+            handOneViableCards.append(handOneCardOne)
+            handOneViableCards.append(handOneCardTwo)
 
             #checking if first hand has at least 5 of same suit
             fiveSuited = False
-            for a in range(1, 5):
-                if handOneSuits.count(a) >= 5:
+            for b in range(1, 5):
+                if handOneSuits.count(b) >= 5:
                     fiveSuited = True
-                    royalFlushSuit = a
+                    royalFlushSuit = b
 
-            handOneValues = []
             #checking if first hand has royal flush
             if (fiveSuited == True):
                 #Editing the seven cards in the hand to remove those that aren't suited
-                for c in list(handOneCards):
-                    if c.getCardSuit() != royalFlushSuit:
-                        handOneCards.remove(c)
+                for c in list(handOneViableCards):
+                    if c.suit != royalFlushSuit:
+                        handOneViableCards.remove(c)
                         #now handOneCards only has cards that are eligible for Royal Flush
-                for c in list(handOneCards):
-                    for i in list(c):
-                        handOneValues.append(i.value)
-                    handOneValues.append(handOneCardOne.value)
-                    handOneValues.append(handOneCardTwo.value)
-                
-
+                for d in list(handOneViableCards):
+                    handOneValues.append(d.value)
+                if (14 in handOneValues) and (13 in handOneValues) and (12 in handOneValues) and (11 in handOneValues) and (10 in handOneValues):
+                    handOneRoyalFlush = True
 
 
 
