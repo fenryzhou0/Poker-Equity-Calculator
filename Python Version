@@ -71,28 +71,36 @@ class Deck:
         #creating list of suits for first hand
         for c in list(outcomesList):
             handOneSuits = []
+            handOneCards = []
             for i in list(c):
                 handOneSuits.append(i.suit)
+                handOneSuits.append(i)
             handOneSuits.append(handOneCardOne.suit)
             handOneSuits.append(handOneCardTwo.suit)
-            print(handOneSuits)
+            handOneCards.append(handOneCardOne)
+            handOneCards.append(handOneCardTwo)
 
-        #checking if first hand has 5 of same suit
-        fiveSuited = False
-        for a in range(1, 5):
-            if handOneSuits.count(a) >= 5:
-                fiveSuited = True
+            #checking if first hand has at least 5 of same suit
+            fiveSuited = False
+            for a in range(1, 5):
+                if handOneSuits.count(a) >= 5:
+                    fiveSuited = True
+                    royalFlushSuit = a
 
-        #checking if first hand has royal flush
-        if (fiveSuited == True):
-            #Creating list of values for first hand
-            for c in list(outcomesList):
-                handOneValues = []
-                for i in list(c):
-                    handOneValues.append(i.value)
-                handOneValues.append(handOneCardOne.value)
-                handOneValues.append(handOneCardTwo.value)
-                #find some way to get rid of cards in the list that arne't suited
+            handOneValues = []
+            #checking if first hand has royal flush
+            if (fiveSuited == True):
+                #Editing the seven cards in the hand to remove those that aren't suited
+                for c in list(handOneCards):
+                    if c.getCardSuit() != royalFlushSuit:
+                        handOneCards.remove(c)
+                        #now handOneCards only has cards that are eligible for Royal Flush
+                for c in list(handOneCards):
+                    for i in list(c):
+                        handOneValues.append(i.value)
+                    handOneValues.append(handOneCardOne.value)
+                    handOneValues.append(handOneCardTwo.value)
+                
 
 
 
