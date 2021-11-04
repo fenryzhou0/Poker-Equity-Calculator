@@ -68,8 +68,9 @@ class Deck:
         #implement way to calculate winning hands based on each outcome
 
     def checkRoyalFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+        firstHandRoyals = 0
+        secondHandRoyals = 0
         handOneRoyalFlush = False
-        handTwoRoyalFlush = False
         #creating list of suits for first hand
         for a in list(outcomesList):
             handOneSuits = []
@@ -77,7 +78,7 @@ class Deck:
             handOneValues = []
             for i in list(a):
                 handOneSuits.append(i.suit)
-                handOneSuits.append(i)
+                handOneViableCards.append(i)
             handOneSuits.append(handOneCardOne.suit)
             handOneSuits.append(handOneCardTwo.suit)
             handOneViableCards.append(handOneCardOne)
@@ -101,6 +102,47 @@ class Deck:
                     handOneValues.append(d.value)
                 if (14 in handOneValues) and (13 in handOneValues) and (12 in handOneValues) and (11 in handOneValues) and (10 in handOneValues):
                     handOneRoyalFlush = True
+                    firstHandRoyals += 1
+
+
+
+        # checking second hand now:
+        for a in list(outcomesList):
+            handTwoSuits = []
+            handTwoViableCards = []
+            handTwoValues = []
+            for i in list(a):
+                handTwoSuits.append(i.suit)
+                handTwoViableCards.append(i)
+            handTwoSuits.append(handTwoCardOne.suit)
+            handTwoSuits.append(handTwoCardTwo.suit)
+            handTwoViableCards.append(handTwoCardOne)
+            handTwoViableCards.append(handTwoCardTwo)
+
+            # checking if first hand has at least 5 of same suit
+            fiveSuitedSecond = False
+            for b in range(1, 5):
+                if handTwoSuits.count(b) >= 5:
+                    fiveSuitedSecond = True
+                    royalFlushSuitSecond = b
+
+            # checking if first hand has royal flush
+            if (fiveSuitedSecond == True):
+                # Editing the seven cards in the hand to remove those that aren't suited
+                for c in list(handTwoViableCards):
+                    if c.suit != royalFlushSuitSecond:
+                        handTwoViableCards.remove(c)
+                        # now handOneCards only has cards that are eligible for Royal Flush
+                for d in list(handTwoViableCards):
+                    handTwoValues.append(d.value)
+                if (14 in handTwoValues) and (13 in handTwoValues) and (12 in handTwoValues) and (
+                        11 in handTwoValues) and (10 in handTwoValues):
+                    handTwoRoyalFlush = True
+                    secondHandRoyals += 1
+        print (firstHandRoyals)
+        print (secondHandRoyals)
+
+
 
 
 
