@@ -90,8 +90,10 @@ class Deck:
         firstHandRoyals = 0
         secondHandRoyals = 0
         handOneRoyalFlush = False
+        handTwoRoyalFlush = False
         #creating list of suits for first hand
         for a in list(outcomesList):
+            ## put checking the second hand under this for loop so that way you can evaluate conditions
             handOneSuits = []
             handOneViableCards = []
             handOneValues = []
@@ -118,18 +120,9 @@ class Deck:
                         handOneViableCards.remove(c)
                     elif int(c.value) <= 9:
                         handOneViableCards.remove(c)
-                for c in list(handOneViableCards):
-                    if int(c.value) == 14:
-                        for c in list(handOneViableCards):
-                            if int(c.value) == 13:
-                                for c in list(handOneViableCards):
-                                    if int(c.value) == 12:
-                                        for c in list(handOneViableCards):
-                                            if int(c.value) == 11:
-                                                for c in list(handOneViableCards):
-                                                    if int(c.value) == 10:
-                                                        handOneRoyalFlush = True
-                                                        firstHandRoyals += 1
+                if len(list(handOneViableCards)) == 5:
+                    handOneRoyalFlush = True
+                    firstHandRoyals += 1
 
 
         # checking second hand now:
@@ -159,18 +152,9 @@ class Deck:
                         handTwoViableCards.remove(c)
                     elif int(c.value) <= 9:
                         handTwoViableCards.remove(c)
-                for c in list(handTwoViableCards):
-                    if int(c.value) == 14:
-                        for c in list(handTwoViableCards):
-                            if int(c.value) == 13:
-                                for c in list(handTwoViableCards):
-                                    if int(c.value) == 12:
-                                        for c in list(handTwoViableCards):
-                                            if int(c.value) == 11:
-                                                for c in list(handTwoViableCards):
-                                                    if int(c.value) == 10:
-                                                        handTwoRoyalFlush = True
-                                                        secondHandRoyals += 1
+                if len(list(handTwoViableCards)) == 5:
+                    handTwoRoyalFlush = True
+                    secondHandRoyals += 1
 
         print (firstHandRoyals)
         print (secondHandRoyals)
