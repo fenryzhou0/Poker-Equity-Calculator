@@ -89,21 +89,32 @@ class Deck:
     def checkRoyalFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
         firstHandRoyals = 0
         secondHandRoyals = 0
-        handOneRoyalFlush = False
-        handTwoRoyalFlush = False
+        handOneWins = 0
+        handTwoWins = 0
+        ties = 0
         #creating list of suits for first hand
         for a in list(outcomesList):
-            ## put checking the second hand under this for loop so that way you can evaluate conditions
+            handOneRoyalFlush = False
+            handTwoRoyalFlush = False
             handOneSuits = []
             handOneViableCards = []
             handOneValues = []
+            handTwoSuits = []
+            handTwoViableCards = []
+            handTwoValues = []
             for i in list(a):
                 handOneSuits.append(i.suit)
                 handOneViableCards.append(i)
+                handTwoSuits.append(i.suit)
+                handTwoViableCards.append(i)
             handOneSuits.append(handOneCardOne.suit)
             handOneSuits.append(handOneCardTwo.suit)
             handOneViableCards.append(handOneCardOne)
             handOneViableCards.append(handOneCardTwo)
+            handTwoSuits.append(handTwoCardOne.suit)
+            handTwoSuits.append(handTwoCardTwo.suit)
+            handTwoViableCards.append(handTwoCardOne)
+            handTwoViableCards.append(handTwoCardTwo)
 
             #checking if first hand has at least 5 of same suit
             fiveSuited = False
@@ -111,6 +122,9 @@ class Deck:
                 if handOneSuits.count(b) >= 5:
                     fiveSuited = True
                     royalFlushSuit = b
+                if handTwoSuits.count(b) >= 5:
+                    fiveSuitedSecond = True
+                    royalFlushSuitSecond = b
 
             #checking if first hand has royal flush
             if (fiveSuited == True):
@@ -124,29 +138,6 @@ class Deck:
                     handOneRoyalFlush = True
                     firstHandRoyals += 1
 
-
-        # checking second hand now:
-        for a in list(outcomesList):
-            handTwoSuits = []
-            handTwoViableCards = []
-            handTwoValues = []
-            for i in list(a):
-                handTwoSuits.append(i.suit)
-                handTwoViableCards.append(i)
-            handTwoSuits.append(handTwoCardOne.suit)
-            handTwoSuits.append(handTwoCardTwo.suit)
-            handTwoViableCards.append(handTwoCardOne)
-            handTwoViableCards.append(handTwoCardTwo)
-
-            # checking if first hand has at least 5 of same suit
-            fiveSuitedSecond = False
-            for b in range(1, 5):
-                if handTwoSuits.count(b) >= 5:
-                    fiveSuitedSecond = True
-                    royalFlushSuitSecond = b
-
-            # checking if first hand has royal flush
-            if (fiveSuitedSecond == True):
                 for c in list(handTwoViableCards):
                     if c.suit != royalFlushSuitSecond:
                         handTwoViableCards.remove(c)
@@ -155,9 +146,18 @@ class Deck:
                 if len(list(handTwoViableCards)) == 5:
                     handTwoRoyalFlush = True
                     secondHandRoyals += 1
+            if (handOneRoyalFlush == True and handTwoRoyalFlush == False):
+                handOneWins += 1
+            if (handOneRoyalFlush == False and handTwoRoyalFlush == True):
+                handTwoWins += 1
+            if (handOneRoyalFlush == True and handTwoRoyalFlush == True):
+                ties += 1
 
         print (firstHandRoyals)
         print (secondHandRoyals)
+        print (handOneWins)
+        print (handTwoWins)
+        print (ties)
 
 
 
