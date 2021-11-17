@@ -58,7 +58,7 @@ class Card:
 class Deck:
     handOneWins = 0
     handTwoWins = 0
-    splits = 0
+    ties = 0
     def __init__(self):
         self.cards = []
         self.createDeck()
@@ -89,9 +89,7 @@ class Deck:
     def checkRoyalFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
         firstHandRoyals = 0
         secondHandRoyals = 0
-        handOneWins = 0
-        handTwoWins = 0
-        ties = 0
+
         #creating list of suits for first hand
         for a in list(outcomesList):
             handOneRoyalFlush = False
@@ -147,17 +145,35 @@ class Deck:
                     handTwoRoyalFlush = True
                     secondHandRoyals += 1
             if (handOneRoyalFlush == True and handTwoRoyalFlush == False):
-                handOneWins += 1
+                Deck.handOneWins += 1
             if (handOneRoyalFlush == False and handTwoRoyalFlush == True):
-                handTwoWins += 1
+                Deck.handTwoWins += 1
             if (handOneRoyalFlush == True and handTwoRoyalFlush == True):
-                ties += 1
+                Deck.ties += 1
+
+        #def checkStraightFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+
+        #def checkQuads(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+
+        #def checkFullHouse(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+
+        #def checkFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+
+        #def checkStraight(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+
+        #def checkTrips(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+
+        #def checkTwoPair(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+
+        #def checkPair(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+
+        #def checkHighCard(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
 
         print (firstHandRoyals)
         print (secondHandRoyals)
-        print (handOneWins)
-        print (handTwoWins)
-        print (ties)
+        print (Deck.handOneWins)
+        print (Deck.handTwoWins)
+        print (Deck.ties)
 
 
 
