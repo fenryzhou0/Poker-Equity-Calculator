@@ -1,4 +1,9 @@
 import itertools
+#Q-Learning to learn about ML
+#KNN, SVM, Random Forest, Elastic Net, to see pre made prediction models
+    #My task is to find how to store data and read it
+#probably will need to use heaps data structure
+
 
 class Card:
 
@@ -81,25 +86,113 @@ class Deck:
     def calculateOutcomes(self):
         outcomesList = list(itertools.combinations(self.cards, 5))
         return outcomesList
-        #for c in list(outcomesList):
-           # for i in list(c):
-            #    i.printCard()
-        #implement way to calculate winning hands based on each outcome
 
-    def checkRoyalFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
-        firstHandRoyals = 0
-        secondHandRoyals = 0
 
-        #creating list of suits for first hand
-        for a in list(outcomesList):
-            handOneRoyalFlush = False
-            handTwoRoyalFlush = False
+    def checkOutcomes(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+        firstHandWins = 0
+        secondHandWins = 0
+
+        #creating helper lists
+        for i in list(outcomesList):
             handOneSuits = []
             handOneViableCards = []
             handOneValues = []
             handTwoSuits = []
             handTwoViableCards = []
             handTwoValues = []
+
+            #populating the 7 card hand list
+            for i in list(i):
+                handOneSuits.append(i.suit)
+                handOneViableCards.append(i)
+                handTwoSuits.append(i.suit)
+                handTwoViableCards.append(i)
+            handOneSuits.append(handOneCardOne.suit)
+            handOneSuits.append(handOneCardTwo.suit)
+            handOneViableCards.append(handOneCardOne)
+            handOneViableCards.append(handOneCardTwo)
+            handTwoSuits.append(handTwoCardOne.suit)
+            handTwoSuits.append(handTwoCardTwo.suit)
+            handTwoViableCards.append(handTwoCardOne)
+            handTwoViableCards.append(handTwoCardTwo)
+
+            proceed = self.checkRoyalFlush(handOneSuits, handOneViableCards, handTwoSuits, handTwoViableCards)
+            
+        print("First hand wins: " + str(Deck.handOneWins))
+        print("Second hand wins: " + str(Deck.handTwoWins))
+        print("Ties: " + str(Deck.ties))
+    def checkRoyalFlush(self, handOneSuits, handOneViableCards, handTwoSuits, handTwoViableCards):
+        winner = False
+        firstHandRoyals = 0
+        secondHandRoyals = 0
+        handOneRoyalFlush = False
+        handTwoRoyalFlush = False
+
+        #checking if the hands have five suited cards
+        fiveSuited = False
+        fiveSuitedSecond = False
+        for b in range(1, 5):
+            if handOneSuits.count(b) >= 5:
+                fiveSuited = True
+                royalFlushSuit = b
+            if handTwoSuits.count(b) >= 5:
+                fiveSuitedSecond = True
+                royalFlushSuitSecond = b
+
+        #checking if first hand has royal flush
+        if (fiveSuited == True):
+            #Editing the seven cards in the hand to remove those that aren't suited
+            for c in list(handOneViableCards):
+                if c.suit != royalFlushSuit:
+                    handOneViableCards.remove(c)
+                elif int(c.value) <= 9:
+                    handOneViableCards.remove(c)
+            if len(list(handOneViableCards)) == 5:
+                handOneRoyalFlush = True
+                firstHandRoyals += 1
+
+        #checking if second hand has royal flush
+        if (fiveSuitedSecond == True):
+            for c in list(handTwoViableCards):
+                if c.suit != royalFlushSuitSecond:
+                    handTwoViableCards.remove(c)
+                elif int(c.value) <= 9:
+                    handTwoViableCards.remove(c)
+            if len(list(handTwoViableCards)) == 5:
+                handTwoRoyalFlush = True
+                secondHandRoyals += 1
+
+        #Evaluating which hand won
+        if (handOneRoyalFlush == True and handTwoRoyalFlush == False):
+            Deck.handOneWins += 1
+            winner = True
+        if (handOneRoyalFlush == False and handTwoRoyalFlush == True):
+            Deck.handTwoWins += 1
+            winner = True
+        if (handOneRoyalFlush == True and handTwoRoyalFlush == True):
+            Deck.ties += 1
+            winner = True
+            
+        return winner
+
+
+
+    #checking straight flush
+    def checkStraightFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+        firstHandSFs = 0
+        secondHandSFs = 0
+        # creating list of suits for first hand
+        for a in list(outcomesList):
+            handOneSF = False
+            handTwoSF = False
+            handOneSuits = []
+            handOneViableCards = []
+            handOneValues = []
+            handTwoSuits = []
+            handTwoViableCards = []
+            handTwoValues = []
+
+            # populating the 7 card hand list
             for i in list(a):
                 handOneSuits.append(i.suit)
                 handOneViableCards.append(i)
@@ -114,8 +207,9 @@ class Deck:
             handTwoViableCards.append(handTwoCardOne)
             handTwoViableCards.append(handTwoCardTwo)
 
-            #checking if first hand has at least 5 of same suit
+            # checking if the hands have five suited cards
             fiveSuited = False
+            fiveSuitedSecond = False
             for b in range(1, 5):
                 if handOneSuits.count(b) >= 5:
                     fiveSuited = True
@@ -124,56 +218,23 @@ class Deck:
                     fiveSuitedSecond = True
                     royalFlushSuitSecond = b
 
-            #checking if first hand has royal flush
-            if (fiveSuited == True):
-                #Editing the seven cards in the hand to remove those that aren't suited
-                for c in list(handOneViableCards):
-                    if c.suit != royalFlushSuit:
-                        handOneViableCards.remove(c)
-                    elif int(c.value) <= 9:
-                        handOneViableCards.remove(c)
-                if len(list(handOneViableCards)) == 5:
-                    handOneRoyalFlush = True
-                    firstHandRoyals += 1
 
-                for c in list(handTwoViableCards):
-                    if c.suit != royalFlushSuitSecond:
-                        handTwoViableCards.remove(c)
-                    elif int(c.value) <= 9:
-                        handTwoViableCards.remove(c)
-                if len(list(handTwoViableCards)) == 5:
-                    handTwoRoyalFlush = True
-                    secondHandRoyals += 1
-            if (handOneRoyalFlush == True and handTwoRoyalFlush == False):
-                Deck.handOneWins += 1
-            if (handOneRoyalFlush == False and handTwoRoyalFlush == True):
-                Deck.handTwoWins += 1
-            if (handOneRoyalFlush == True and handTwoRoyalFlush == True):
-                Deck.ties += 1
+    #def checkQuads(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
 
-        #def checkStraightFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+    #def checkFullHouse(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
 
-        #def checkQuads(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+    #def checkFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
 
-        #def checkFullHouse(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+    #def checkStraight(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
 
-        #def checkFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+    #def checkTrips(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
 
-        #def checkStraight(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+    #def checkTwoPair(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
 
-        #def checkTrips(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+    #def checkPair(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
 
-        #def checkTwoPair(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
+    #def checkHighCard(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
 
-        #def checkPair(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
-
-        #def checkHighCard(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
-
-        print (firstHandRoyals)
-        print (secondHandRoyals)
-        print (Deck.handOneWins)
-        print (Deck.handTwoWins)
-        print (Deck.ties)
 
 
 
@@ -214,5 +275,7 @@ deck.removeDealtCard(handTwoCardTwo)
 #running all possible outcomes
 outcomes = deck.calculateOutcomes()
 
-deck.checkRoyalFlush(handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomes)
+#calling the methods to check all the outcomes
+deck.checkOutcomes(handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomes)
+
 
