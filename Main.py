@@ -1,4 +1,5 @@
 import itertools
+
 #Q-Learning to learn about ML
 #KNN, SVM, Random Forest, Elastic Net, to see pre made prediction models
     #My task is to find how to store data and read it
@@ -123,45 +124,72 @@ class Deck:
             handOneRoyal = self.checkRoyalFlush(handOneSuits, handOneViableCards)
             handTwoRoyal = self.checkRoyalFlush(handTwoSuits, handTwoViableCards)
 
-            winner = False
+            winnerRF = False
             if (handOneRoyal == True and handTwoRoyal == False):
                 Deck.handOneWins += 1
-                winner = True
+                winnerRF = True
             if (handOneRoyal == False and handTwoRoyal == True):
                 Deck.handTwoWins += 1
-                winner = True
+                winnerRF = True
             if (handOneRoyal == True and handTwoRoyal == True):
                 Deck.ties += 1
-                winner = True
+                winnerRF = True
 
-            if (winner == False):
+            if (winnerRF == False):
                 handOneSF = self.checkStraightFlush(handOneSuits, handOneValues, handOneViableCards)
                 handTwoSF = self.checkStraightFlush(handTwoSuits, handTwoValues, handTwoViableCards)
-                winner = False
-                if (handOneSF == True and handTwoSF == False):
+                winnerSF = False
+                if (handOneSF > handTwoSF):
                     Deck.handOneWins += 1
-                    winner = True
-                if (handOneSF == False and handTwoSF == True):
+                    winnerSF = True
+                if (handOneSF < handTwoSF):
                     Deck.handTwoWins += 1
-                    winner = True
-                if (handOneSF == True and handTwoSF == True):
+                    winnerSF = True
+                if (handOneSF > 0 and handTwoSF > 0 and handOneSF == handTwoSF):
                     Deck.ties += 1
-                    winner = True
+                    winnerSF = True
 
-                if (winner == False):
+                if (winnerSF == False):
                     handOneQuads = self.checkQuads(handOneValues)
                     handTwoQuads = self.checkQuads(handTwoValues)
-                    winner = False
-                    if (handOneQuads == True and handTwoQuads == False):
+                    winnerQuads = False
+                    if (handOneQuads > handTwoQuads):
                         Deck.handOneWins += 1
-                        print(handOneValues)
-                        winner = True
-                    if (handOneQuads == False and handTwoQuads == True):
+                        winnerQuads = True
+                    if (handOneQuads < handTwoQuads):
                         Deck.handTwoWins += 1
-                        winner = True
-                    if (handOneQuads == True and handTwoQuads == True):
+                        winnerQuads = True
+                    if (handOneQuads > 0 and handTwoQuads > 0 and handOneQuads == handTwoQuads):
                         Deck.ties += 1
-                        winner = True
+                        winnerQuads = True
+
+                    if (winnerQuads == False):
+                        handOneFullHouse = self.checkFullHouse(handOneValues)
+                        handTwoFullHouse = self.checkFullHouse(handTwoValues)
+                        winnerFullHouse = False
+                        if (handOneFullHouse[0] == 0 and handTwoFullHouse[0] == 0):
+                            winnerFullHouse = False
+                        elif (handOneFullHouse[0] > handTwoFullHouse[0] and handOneFullHouse[1] != 0 and handTwoFullHouse[1] != 0):
+                            Deck.handOneWins += 1
+                            winnerFullHouse = True
+                        elif (handOneFullHouse[0] < handTwoFullHouse[0] and handOneFullHouse[1] != 0 and handTwoFullHouse[1] != 0):
+                            Deck.handTwoWins += 1
+                            winnerFullHouse = True
+                        elif (handOneFullHouse[0] == handTwoFullHouse[0]):
+                            if (handOneFullHouse[1] == 0 and handTwoFullHouse[1] == 0):
+                                winnerFullHouse = False
+                            elif (handOneFullHouse[1] > handTwoFullHouse[1]):
+                                Deck.handOneWins += 1
+                                print(handOneValues)
+                                winnerFullHouse = True
+                            elif (handOneFullHouse[1] < handTwoFullHouse[1]):
+                                Deck.handTwoWins += 1
+                                winnerFullHouse = True
+                            elif (handOneFullHouse[1] == handTwoFullHouse[1]):
+                                Deck.ties += 1
+                                winnerFullHouse = True
+
+
 
         print("First hand wins: " + str(Deck.handOneWins))
         print("Second hand wins: " + str(Deck.handTwoWins))
@@ -192,7 +220,7 @@ class Deck:
 
     #checking straight flush
     def checkStraightFlush(self, handSuits, handValues, handCards):
-        straightFlush = False
+        straightFlush = 0
 
         #checking if the hands have five suited cards
         fiveSuited = False
@@ -225,24 +253,34 @@ class Deck:
             if (handValues[len(handValues) - 1] != handValues[len(handValues) - 2] + 1):
                 del handValues[len(handValues) - 1]
 
-            if (sorted(handValues) == list(range(min(handValues), max(handValues) + 1)) and len(handValues) >= 5):
-                straightFlush = True
+            if (len(handValues) >= 5):
+                if (sorted(handValues) == list(range(min(handValues), max(handValues) + 1))):
+                    straightFlush = max(handValues)
 
         return straightFlush
 
 
     def checkQuads(self, cardValues):
-        quads = False
+        quads = 0
         for b in range(2, 15):
             if cardValues.count(b) == 4:
-                quads = True
+                quads = b
         return quads
 
     def checkFullHouse(self, cardValues):
-        fullHouse = False
-        for a in range(2, 15):
+        fullHouseTrip = 0
+        fullHousePair = 0
+        for a in range(15, 1, -1):
             if cardValues.count(a) == 3:
-                
+                fullHouseTrip = a
+                for b in itertools.chain(range(15, a, -1), range(a - 1, 1, -1)):
+                    if cardValues.count(b) == 2:
+                        fullHousePair = b
+        return fullHouseTrip, fullHousePair
+
+
+
+
 
     #def checkFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
 
