@@ -50,13 +50,13 @@ class Card:
     def getCardSuit(self):
         cardOneSuitMenu = "Enter the card's suit: \r\n"
         cardSuit = input(cardOneSuitMenu)
-        if cardSuit == "Spades":
+        if cardSuit == "s":
             cardSuit = 1
-        if cardSuit == "Clubs":
+        if cardSuit == "c":
             cardSuit = 2
-        if cardSuit == "Hearts":
+        if cardSuit == "h":
             cardSuit = 3
-        if cardSuit == "Diamonds":
+        if cardSuit == "d":
             cardSuit = 4
         return cardSuit
 
@@ -121,9 +121,9 @@ class Deck:
             handTwoViableCards.append(handTwoCardOne)
             handTwoViableCards.append(handTwoCardTwo)
 
-            handOneRoyal = self.checkRoyalFlush(handOneSuits, handOneViableCards)
-            handTwoRoyal = self.checkRoyalFlush(handTwoSuits, handTwoViableCards)
 
+            handOneRoyal = self.checkRoyalFlush(handOneSuits.copy(), handOneViableCards.copy())
+            handTwoRoyal = self.checkRoyalFlush(handTwoSuits.copy(), handTwoViableCards.copy())
             winnerRF = False
             if (handOneRoyal == True and handTwoRoyal == False):
                 Deck.handOneWins += 1
@@ -136,8 +136,8 @@ class Deck:
                 winnerRF = True
 
             if (winnerRF == False):
-                handOneSF = self.checkStraightFlush(handOneSuits, handOneValues, handOneViableCards)
-                handTwoSF = self.checkStraightFlush(handTwoSuits, handTwoValues, handTwoViableCards)
+                handOneSF = self.checkStraightFlush(handOneSuits.copy(), handOneValues.copy(), handOneViableCards.copy())
+                handTwoSF = self.checkStraightFlush(handTwoSuits.copy(), handTwoValues.copy(), handTwoViableCards.copy())
                 winnerSF = False
                 if (handOneSF > handTwoSF):
                     Deck.handOneWins += 1
@@ -150,8 +150,8 @@ class Deck:
                     winnerSF = True
 
                 if (winnerSF == False):
-                    handOneQuads = self.checkQuads(handOneValues)
-                    handTwoQuads = self.checkQuads(handTwoValues)
+                    handOneQuads = self.checkQuads(handOneValues.copy())
+                    handTwoQuads = self.checkQuads(handTwoValues.copy())
                     winnerQuads = False
                     if (handOneQuads > handTwoQuads):
                         Deck.handOneWins += 1
@@ -164,8 +164,8 @@ class Deck:
                         winnerQuads = True
 
                     if (winnerQuads == False):
-                        handOneFullHouse = self.checkFullHouse(handOneValues)
-                        handTwoFullHouse = self.checkFullHouse(handTwoValues)
+                        handOneFullHouse = self.checkFullHouse(handOneValues.copy())
+                        handTwoFullHouse = self.checkFullHouse(handTwoValues.copy())
                         winnerFullHouse = False
                         if (handOneFullHouse[0] == 0 and handTwoFullHouse[0] == 0):
                             winnerFullHouse = False
@@ -180,7 +180,6 @@ class Deck:
                                 winnerFullHouse = False
                             elif (handOneFullHouse[1] > handTwoFullHouse[1]):
                                 Deck.handOneWins += 1
-                                print(handOneValues)
                                 winnerFullHouse = True
                             elif (handOneFullHouse[1] < handTwoFullHouse[1]):
                                 Deck.handTwoWins += 1
@@ -190,8 +189,8 @@ class Deck:
                                 winnerFullHouse = True
 
                         if (winnerFullHouse == False):
-                            handOneFlush = self.checkFlush(self, handOneSuits, handOneValues, handOneViableCards)
-                            handTwoFlush = self.checkFlush(self, handTwoSuits, handTwoValues, handTwoViableCards)
+                            handOneFlush = self.checkFlush(handOneSuits.copy(), handOneViableCards.copy())
+                            handTwoFlush = self.checkFlush(handTwoSuits.copy(), handTwoViableCards.copy())
                             winnerFlush = False
                             if (handOneFlush == None and handTwoFlush != None):
                                 Deck.handTwoWins += 1
@@ -200,13 +199,22 @@ class Deck:
                                 Deck.handOneWins += 1
                                 winnerFlush = True
                             elif (handOneFlush != None and handTwoFlush != None):
-                                handOneFlush.sort()
-                                handTwoFlush.sort()
-                                for i in range(0, 6):
+                                tieFlushCards = 0
+                                handOneFlush.sort(reverse = True)
+                                handTwoFlush.sort(reverse = True)
+                                for i in range(0, 5):
                                     if (handOneFlush[i] > handTwoFlush[i]):
                                         Deck.handOneWins += 1
                                         winnerFlush = True
-                                    elif (handTwoFlush[i] > handTwoFlush[i])
+                                    elif (handTwoFlush[i] > handTwoFlush[i]):
+                                        Deck.handTwoWins += 1
+                                        winnerFlush = True
+                                    elif (handOneFlush[i] == handTwoFlush[i]):
+                                        tieFlushCards += 1
+                                if (tieFlushCards == 5):
+                                    Deck.ties += 1
+                                    winnerFlush = True
+
 
 
 
@@ -215,7 +223,9 @@ class Deck:
         print("Second hand wins: " + str(Deck.handTwoWins))
         print("Ties: " + str(Deck.ties))
 
-    def checkRoyalFlush(self, handSuits, handCards):
+    def checkRoyalFlush(self, handSuitsParameter, handCardsParameter):
+        handSuits = handSuitsParameter
+        handCards = handCardsParameter
         royalFlush = False
 
         #checking if the hands have five suited cards
@@ -255,12 +265,16 @@ class Deck:
             for c in list(handCards):
                 if c.suit != straightFlushSuit:
                     handCards.remove(c)
-                    handValues.remove(c)
+
+            handValues = []
+            for i in list(handCards):
+                handValues.append(int(i.value))
             #if Ace is present, add a temporary card with value of 1 to accomodate possibility of wheel
             handValues.sort()
             for c in list(handValues):
                 if c == 14:
-                    handValues[c] = 1
+                    handValues.remove(c)
+                    handValues.append(1)
 
 
             #checking bottom 2 and top 2 cards to see if they are part of SF
@@ -300,7 +314,7 @@ class Deck:
         return fullHouseTrip, fullHousePair
 
 
-    def checkFlush(self, handSuits, handValues, handCards):
+    def checkFlush(self, handSuits, handCards):
         flushValues = None
         fiveSuited = False
         for b in range(1, 5):
@@ -312,13 +326,21 @@ class Deck:
             # Editing the seven cards in the hand to remove those that aren't suited
             for c in list(handCards):
                 if c.suit != flushSuit:
-                    handValues.remove(c)
-                    flushValues = handValues
+                    handCards.remove(c)
 
+            handValues = []
+            for i in list(handCards):
+                handValues.append(int(i.value))
+
+            flushValues = list(handValues)
+            flushValues.sort(reverse = True)
             while (len(flushValues) > 5):
                 flushValues.pop()
             return flushValues
         return flushValues
+
+        
+
 
 
 
