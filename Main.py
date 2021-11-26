@@ -189,6 +189,26 @@ class Deck:
                                 Deck.ties += 1
                                 winnerFullHouse = True
 
+                        if (winnerFullHouse == False):
+                            handOneFlush = self.checkFlush(self, handOneSuits, handOneValues, handOneViableCards)
+                            handTwoFlush = self.checkFlush(self, handTwoSuits, handTwoValues, handTwoViableCards)
+                            winnerFlush = False
+                            if (handOneFlush == None and handTwoFlush != None):
+                                Deck.handTwoWins += 1
+                                winnerFlush = True
+                            elif (handTwoFlush == None and handOneFlush != None):
+                                Deck.handOneWins += 1
+                                winnerFlush = True
+                            elif (handOneFlush != None and handTwoFlush != None):
+                                handOneFlush.sort()
+                                handTwoFlush.sort()
+                                for i in range(0, 6):
+                                    if (handOneFlush[i] > handTwoFlush[i]):
+                                        Deck.handOneWins += 1
+                                        winnerFlush = True
+                                    elif (handTwoFlush[i] > handTwoFlush[i])
+
+
 
 
         print("First hand wins: " + str(Deck.handOneWins))
@@ -240,7 +260,8 @@ class Deck:
             handValues.sort()
             for c in list(handValues):
                 if c == 14:
-                    handValues.remove(c)
+                    handValues[c] = 1
+
 
             #checking bottom 2 and top 2 cards to see if they are part of SF
             handValues.sort()
@@ -279,20 +300,27 @@ class Deck:
         return fullHouseTrip, fullHousePair
 
 
+    def checkFlush(self, handSuits, handValues, handCards):
+        flushValues = None
+        fiveSuited = False
+        for b in range(1, 5):
+            if handSuits.count(b) >= 5:
+                fiveSuited = True
+                flushSuit = b
+
+        if (fiveSuited == True):
+            # Editing the seven cards in the hand to remove those that aren't suited
+            for c in list(handCards):
+                if c.suit != flushSuit:
+                    handValues.remove(c)
+                    flushValues = handValues
+
+            while (len(flushValues) > 5):
+                flushValues.pop()
+            return flushValues
+        return flushValues
 
 
-
-    #def checkFlush(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
-
-    #def checkStraight(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
-
-    #def checkTrips(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
-
-    #def checkTwoPair(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
-
-    #def checkPair(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
-
-    #def checkHighCard(self, handOneCardOne, handOneCardTwo, handTwoCardOne, handTwoCardTwo, outcomesList):
 
 
 
