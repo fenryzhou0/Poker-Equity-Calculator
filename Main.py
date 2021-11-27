@@ -215,6 +215,34 @@ class Deck:
                                     Deck.ties += 1
                                     winnerFlush = True
 
+                            if (winnerFlush == False):
+                                handOneStraight = self.checkStraight(handOneValues.copy())
+                                handTwoStraight = self.checkStraight(handTwoValues.copy())
+                                winnerStraight = False
+                                if (handOneStraight == None and handTwoStraight != None):
+                                    Deck.handTwoWins += 1
+                                    winnerStraight = True
+                                elif (handTwoStraight == None and handOneStraight != None):
+                                    Deck.handOneWins += 1
+                                    winnerStraight = True
+                                elif (handOneStraight != None and handTwoStraight != None):
+                                    tieStraightCards = 0
+                                    handOneStraight.sort(reverse = True)
+                                    handTwoStraight.sort(reverse = True)
+                                    for i in range(0, 5):
+                                        if (handOneStraight[i] > handTwoStraight[i]):
+                                            Deck.handOneWins += 1
+                                            winnerStraight = True
+                                        elif (handTwoStraight[i] > handTwoStraight[i]):
+                                            Deck.handTwoWins += 1
+                                            winnerStraight = True
+                                        elif (handOneStraight[i] == handTwoStraight[i]):
+                                            tieStraightCards += 1
+                                    if (tieStraightCards == 5):
+                                        Deck.ties += 1
+                                        winnerStraight = True
+
+
 
 
 
@@ -340,8 +368,8 @@ class Deck:
         return flushValues
 
 
-    def checkStraight(self, handValues, handCards):
-        straightValues = None
+    def checkStraight(self, handValues):
+        handValuesNoDups = []
         aceCounter = 0
 
         kingPresent = False
@@ -351,16 +379,31 @@ class Deck:
             if c == 14:
                 handValues.append(1)
         handValues.sort()
-        #remove duplicate card values and only take the 5 highest values for straight
+
+        #removing duplicates
+        for i in handValues:
+            if i not in handValuesNoDups:
+                handValuesNoDups.append(i)
+
+        #removing cards not part of straight
         for i in range(1, 3 + aceCounter):
-            if (handValues[0] != handValues[1] - 1):
-                del handValues[0]
-            if (handValues[0] != handValues[1] - 1):
-                del handValues[0]
-            if (handValues[len(handValues) - 1] != handValues[len(handValues) - 2] + 1):
-                del handValues[len(handValues) - 1]
-            if (handValues[len(handValues) - 1] != handValues[len(handValues) - 2] + 1):
-                del handValues[len(handValues) - 1]
+            if (handValuesNoDups[0] != handValuesNoDups[1] - 1):
+                del handValuesNoDups[0]
+            if (handValuesNoDups[0] != handValuesNoDups[1] - 1):
+                del handValuesNoDups[0]
+            if (handValuesNoDups[len(handValuesNoDups) - 1] != handValuesNoDups[len(handValuesNoDups) - 2] + 1):
+                del handValuesNoDups[len(handValuesNoDups) - 1]
+            if (handValuesNoDups[len(handValuesNoDups) - 1] != handValuesNoDups[len(handValuesNoDups) - 2] + 1):
+                del handValuesNoDups[len(handValuesNoDups) - 1]
+
+        #evaluating straight
+        if (len(handValuesNoDups) >= 5):
+            handValuesNoDups.sort(reverse = True)
+            if (sorted(handValuesNoDups) == list(range(min(handValuesNoDups), max(handValuesNoDups) + 1))):
+                return handValuesNoDups
+        else:
+            handValuesNoDups = None
+        return handValuesNoDups
 
 
 
