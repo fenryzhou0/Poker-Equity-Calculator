@@ -294,25 +294,29 @@ class Deck:
                                         handOneTwoPair = self.checkTwoPair(handOneValues.copy())
                                         handTwoTwoPair = self.checkTwoPair(handTwoValues.copy())
                                         winner = False
+                                        handOneWin = False
+                                        handTwoWin = False
                                         if (handOneTwoPair[0] == 0 and handTwoTwoPair[0] == 0):
                                             winner = False
-                                        elif (handOneTwoPair[0] > handTwoTwoPair[0] and handOneTwoPair[1] != 0 and
-                                              handTwoTwoPair[1] != 0):
+                                        elif (handOneTwoPair[0] > handTwoTwoPair[0]):
                                             Deck.handOneWins += 1
                                             winner = True
-                                        elif (handOneTwoPair[0] < handTwoTwoPair[0] and handOneTwoPair[1] != 0 and
-                                              handTwoTwoPair[1] != 0):
+                                            handOneWin = True
+                                        elif (handOneTwoPair[0] < handTwoTwoPair[0]):
                                             Deck.handTwoWins += 1
                                             winner = True
+                                            handTwoWin = True
                                         elif (handOneTwoPair[0] == handTwoTwoPair[0]):
                                             if (handOneTwoPair[1] == 0 and handTwoTwoPair[1] == 0):
                                                 winner = False
                                             elif (handOneTwoPair[1] > handTwoTwoPair[1]):
                                                 Deck.handOneWins += 1
                                                 winner = True
+                                                handOneWin = True
                                             elif (handOneTwoPair[1] < handTwoTwoPair[1]):
                                                 Deck.handTwoWins += 1
                                                 winner = True
+                                                handTwoWin = True
                                             elif (handOneTwoPair[1] == handTwoTwoPair[1]):
                                                 handOneTwoPairHand = handOneValues.copy()
                                                 handTwoTwoPairHand = handTwoValues.copy()
@@ -332,24 +336,31 @@ class Deck:
                                                 if (handOneTwoPairHand[0] > handTwoTwoPairHand[0]):
                                                     Deck.handOneWins += 1
                                                     winner = True
+                                                    handOneWin = True
                                                 elif (handTwoTwoPairHand[0] > handOneTwoPairHand[0]):
                                                     Deck.handTwoWins += 1
                                                     winner = True
+                                                    handTwoWin = True
                                                 elif (handOneTwoPairHand[0] == handTwoTwoPairHand[0]):
                                                     Deck.ties += 1
                                                     winner = True
+
 
                                         #checking pair
                                         if (winner == False):
                                             handOnePair = self.checkPair(handOneValues.copy())
                                             handTwoPair = self.checkPair(handTwoValues.copy())
                                             winner = False
+                                            handOneWin = False
+                                            handTwoWin = False
                                             if (handOnePair > handTwoPair):
                                                 Deck.handOneWins += 1
                                                 winner = True
+                                                handOneWin = True
                                             if (handOnePair < handTwoPair):
                                                 Deck.handTwoWins += 1
                                                 winner = True
+                                                handTwoWin = True
                                             if (handOnePair > 0 and handTwoPair > 0 and handOnePair == handTwoPair):
                                                 handOnePairHand = handOneValues.copy()
                                                 handTwoPairHand = handTwoValues.copy()
@@ -365,14 +376,17 @@ class Deck:
                                                     if (handOnePairHand[i] > handTwoPairHand[i]):
                                                         Deck.handOneWins += 1
                                                         winner = True
+                                                        handOneWin = True
                                                     elif (handTwoPairHand[i] > handOnePairHand[i]):
                                                         Deck.handTwoWins += 1
                                                         winner = True
+                                                        handTwoWin = True
                                                     elif (handOnePairHand[i] == handTwoPairHand[i]):
                                                         pairCounter += 1
                                                 if (pairCounter == 3):
                                                     Deck.ties += 1
                                                     winner = True
+
 
                                             #checking high card
                                             if (winner == False):
@@ -401,9 +415,9 @@ class Deck:
 
 
 
-        print("First hand wins: " + str(Deck.handOneWins))
-        print("Second hand wins: " + str(Deck.handTwoWins))
-        print("Ties: " + str(Deck.ties))
+        print("First hand chance: " + str(Deck.handOneWins / 1712304))
+        print("Second hand chance: " + str(Deck.handTwoWins / 1712304))
+        print("Split chance: " + str(Deck.ties / 1712304))
 
     def checkRoyalFlush(self, handSuitsParameter, handCardsParameter):
         handSuits = handSuitsParameter
@@ -567,9 +581,9 @@ class Deck:
         lowPair = 0
         for b in range(15, 1, -1):
             if handValues.count(b) == 2:
-                highPair = b
                 for a in itertools.chain(range(15, b, -1), range(b - 1, 1, -1)):
                     if handValues.count(a) == 2:
+                        highPair = b
                         lowPair = a
         return highPair, lowPair
 
