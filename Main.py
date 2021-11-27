@@ -269,7 +269,7 @@ class Deck:
             handValues = []
             for i in list(handCards):
                 handValues.append(int(i.value))
-            #if Ace is present, add a temporary card with value of 1 to accomodate possibility of wheel
+            #if Ace is present, add a temporary card with value of 1 to accommodate possibility of wheel
             handValues.sort()
             for c in list(handValues):
                 if c == 14:
@@ -339,7 +339,29 @@ class Deck:
             return flushValues
         return flushValues
 
-        
+
+    def checkStraight(self, handValues, handCards):
+        straightValues = None
+        aceCounter = 0
+
+        kingPresent = False
+        deucePresent = False
+        handValues.sort()
+        for c in list(handValues):
+            if c == 14:
+                handValues.append(1)
+        handValues.sort()
+        #remove duplicate card values and only take the 5 highest values for straight
+        for i in range(1, 3 + aceCounter):
+            if (handValues[0] != handValues[1] - 1):
+                del handValues[0]
+            if (handValues[0] != handValues[1] - 1):
+                del handValues[0]
+            if (handValues[len(handValues) - 1] != handValues[len(handValues) - 2] + 1):
+                del handValues[len(handValues) - 1]
+            if (handValues[len(handValues) - 1] != handValues[len(handValues) - 2] + 1):
+                del handValues[len(handValues) - 1]
+
 
 
 
