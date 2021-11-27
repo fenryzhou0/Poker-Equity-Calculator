@@ -124,80 +124,91 @@ class Deck:
 
             handOneRoyal = self.checkRoyalFlush(handOneSuits.copy(), handOneViableCards.copy())
             handTwoRoyal = self.checkRoyalFlush(handTwoSuits.copy(), handTwoViableCards.copy())
-            winnerRF = False
+
+            royal = False
+            sf = False
+            quad = False
+            fh = False
+            flush = False
+            straight = False
+
+            winner = False
+            handOneWin = False
+            handTwoWin = False
             if (handOneRoyal == True and handTwoRoyal == False):
                 Deck.handOneWins += 1
-                winnerRF = True
+                winner = True
             if (handOneRoyal == False and handTwoRoyal == True):
                 Deck.handTwoWins += 1
-                winnerRF = True
+                winner = True
             if (handOneRoyal == True and handTwoRoyal == True):
                 Deck.ties += 1
-                winnerRF = True
+                winner = True
 
-            if (winnerRF == False):
+            if (winner == False):
                 handOneSF = self.checkStraightFlush(handOneSuits.copy(), handOneValues.copy(), handOneViableCards.copy())
                 handTwoSF = self.checkStraightFlush(handTwoSuits.copy(), handTwoValues.copy(), handTwoViableCards.copy())
-                winnerSF = False
+                winner = False
                 if (handOneSF > handTwoSF):
                     Deck.handOneWins += 1
-                    winnerSF = True
+                    winner = True
                 if (handOneSF < handTwoSF):
                     Deck.handTwoWins += 1
-                    winnerSF = True
+                    winner = True
                 if (handOneSF > 0 and handTwoSF > 0 and handOneSF == handTwoSF):
                     Deck.ties += 1
-                    winnerSF = True
+                    winner = True
 
-                if (winnerSF == False):
+                if (winner == False):
                     handOneQuads = self.checkQuads(handOneValues.copy())
                     handTwoQuads = self.checkQuads(handTwoValues.copy())
-                    winnerQuads = False
+                    winner = False
                     if (handOneQuads > handTwoQuads):
                         Deck.handOneWins += 1
-                        winnerQuads = True
+                        winner = True
                     if (handOneQuads < handTwoQuads):
                         Deck.handTwoWins += 1
-                        winnerQuads = True
+                        winner = True
                     if (handOneQuads > 0 and handTwoQuads > 0 and handOneQuads == handTwoQuads):
                         Deck.ties += 1
-                        winnerQuads = True
+                        winner = True
 
-                    if (winnerQuads == False):
+                    if (winner == False):
                         handOneFullHouse = self.checkFullHouse(handOneValues.copy())
                         handTwoFullHouse = self.checkFullHouse(handTwoValues.copy())
-                        winnerFullHouse = False
+                        winner = False
                         if (handOneFullHouse[0] == 0 and handTwoFullHouse[0] == 0):
-                            winnerFullHouse = False
+                            winner = False
                         elif (handOneFullHouse[0] > handTwoFullHouse[0] and handOneFullHouse[1] != 0 and handTwoFullHouse[1] != 0):
                             Deck.handOneWins += 1
-                            winnerFullHouse = True
+                            winner = True
                         elif (handOneFullHouse[0] < handTwoFullHouse[0] and handOneFullHouse[1] != 0 and handTwoFullHouse[1] != 0):
                             Deck.handTwoWins += 1
-                            winnerFullHouse = True
+                            winner = True
                         elif (handOneFullHouse[0] == handTwoFullHouse[0]):
                             if (handOneFullHouse[1] == 0 and handTwoFullHouse[1] == 0):
-                                winnerFullHouse = False
+                                winner = False
                             elif (handOneFullHouse[1] > handTwoFullHouse[1]):
                                 Deck.handOneWins += 1
-                                winnerFullHouse = True
+                                winner = True
                             elif (handOneFullHouse[1] < handTwoFullHouse[1]):
                                 Deck.handTwoWins += 1
-                                winnerFullHouse = True
+                                winner = True
                             elif (handOneFullHouse[1] == handTwoFullHouse[1]):
                                 Deck.ties += 1
-                                winnerFullHouse = True
+                                winner = True
 
-                        if (winnerFullHouse == False):
+
+                        if (winner == False):
                             handOneFlush = self.checkFlush(handOneSuits.copy(), handOneViableCards.copy())
                             handTwoFlush = self.checkFlush(handTwoSuits.copy(), handTwoViableCards.copy())
-                            winnerFlush = False
+                            winner = False
                             if (handOneFlush == None and handTwoFlush != None):
                                 Deck.handTwoWins += 1
-                                winnerFlush = True
+                                winner = True
                             elif (handTwoFlush == None and handOneFlush != None):
                                 Deck.handOneWins += 1
-                                winnerFlush = True
+                                winner = True
                             elif (handOneFlush != None and handTwoFlush != None):
                                 tieFlushCards = 0
                                 handOneFlush.sort(reverse = True)
@@ -205,42 +216,47 @@ class Deck:
                                 for i in range(0, 5):
                                     if (handOneFlush[i] > handTwoFlush[i]):
                                         Deck.handOneWins += 1
-                                        winnerFlush = True
+                                        winner = True
                                     elif (handTwoFlush[i] > handTwoFlush[i]):
                                         Deck.handTwoWins += 1
-                                        winnerFlush = True
+                                        winner = True
                                     elif (handOneFlush[i] == handTwoFlush[i]):
                                         tieFlushCards += 1
                                 if (tieFlushCards == 5):
                                     Deck.ties += 1
-                                    winnerFlush = True
+                                    winner = True
 
-                            if (winnerFlush == False):
+
+                            if (winner == False):
                                 handOneStraight = self.checkStraight(handOneValues.copy())
                                 handTwoStraight = self.checkStraight(handTwoValues.copy())
-                                winnerStraight = False
+                                winner = False
                                 if (handOneStraight == None and handTwoStraight != None):
                                     Deck.handTwoWins += 1
-                                    winnerStraight = True
+                                    winner = True
                                 elif (handTwoStraight == None and handOneStraight != None):
                                     Deck.handOneWins += 1
-                                    winnerStraight = True
+                                    winner = True
                                 elif (handOneStraight != None and handTwoStraight != None):
                                     tieStraightCards = 0
                                     handOneStraight.sort(reverse = True)
                                     handTwoStraight.sort(reverse = True)
+                                   # print(handOneStraight)
+                                   # print(handTwoStraight)
+                                   # print("BREAK---------------")
                                     for i in range(0, 5):
                                         if (handOneStraight[i] > handTwoStraight[i]):
                                             Deck.handOneWins += 1
-                                            winnerStraight = True
+                                            winner = True
                                         elif (handTwoStraight[i] > handTwoStraight[i]):
                                             Deck.handTwoWins += 1
-                                            winnerStraight = True
+                                            winner = True
                                         elif (handOneStraight[i] == handTwoStraight[i]):
                                             tieStraightCards += 1
                                     if (tieStraightCards == 5):
                                         Deck.ties += 1
-                                        winnerStraight = True
+                                        winner = True
+
 
 
 
@@ -337,7 +353,7 @@ class Deck:
             if cardValues.count(a) == 3:
                 fullHouseTrip = a
                 for b in itertools.chain(range(15, a, -1), range(a - 1, 1, -1)):
-                    if cardValues.count(b) == 2:
+                    if cardValues.count(b) >= 2:
                         fullHousePair = b
         return fullHouseTrip, fullHousePair
 
@@ -370,23 +386,19 @@ class Deck:
 
     def checkStraight(self, handValues):
         handValuesNoDups = []
-        aceCounter = 0
-
-        kingPresent = False
-        deucePresent = False
         handValues.sort()
         for c in list(handValues):
             if c == 14:
                 handValues.append(1)
-        handValues.sort()
 
         #removing duplicates
         for i in handValues:
             if i not in handValuesNoDups:
                 handValuesNoDups.append(i)
 
+        handValuesNoDups.sort()
         #removing cards not part of straight
-        for i in range(1, 3 + aceCounter):
+        if (len(handValuesNoDups) >= 5):
             if (handValuesNoDups[0] != handValuesNoDups[1] - 1):
                 del handValuesNoDups[0]
             if (handValuesNoDups[0] != handValuesNoDups[1] - 1):
@@ -396,14 +408,14 @@ class Deck:
             if (handValuesNoDups[len(handValuesNoDups) - 1] != handValuesNoDups[len(handValuesNoDups) - 2] + 1):
                 del handValuesNoDups[len(handValuesNoDups) - 1]
 
-        #evaluating straight
+        #evaluating consecutivity
         if (len(handValuesNoDups) >= 5):
             handValuesNoDups.sort(reverse = True)
             if (sorted(handValuesNoDups) == list(range(min(handValuesNoDups), max(handValuesNoDups) + 1))):
                 return handValuesNoDups
         else:
             handValuesNoDups = None
-        return handValuesNoDups
+            return handValuesNoDups
 
 
 
