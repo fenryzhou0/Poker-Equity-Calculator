@@ -1,4 +1,5 @@
 import itertools
+import math
 
 #Q-Learning to learn about ML
 #KNN, SVM, Random Forest, Elastic Net, to see pre made prediction models
@@ -397,6 +398,7 @@ class Deck:
                                                         highCardTie += 1
                                                 if (highCardTie == 7):
                                                     Deck.ties += 1
+        deck.printChances(2)
 
 
 
@@ -435,7 +437,6 @@ class Deck:
 
             handOneRoyal = self.checkRoyalFlush(handOneSuits.copy(), handOneViableCards.copy())
             handTwoRoyal = self.checkRoyalFlush(handTwoSuits.copy(), handTwoViableCards.copy())
-            print(handTwoSuits)
 
 
             #checking royal flush
@@ -714,11 +715,9 @@ class Deck:
                                                         highCardTie += 1
                                                 if (highCardTie == 7):
                                                     Deck.ties += 1
+        deck.printChances(5)
 
 
-        print("First hand chance: " + str(Deck.handOneWins / 1712304))
-        print("Second hand chance: " + str(Deck.handTwoWins / 1712304))
-        print("Split chance: " + str(Deck.ties / 1712304))
 
     def checkRoyalFlush(self, handSuitsParameter, handCardsParameter):
         handSuits = handSuitsParameter
@@ -893,6 +892,11 @@ class Deck:
             if handValues.count(b) == 2:
                 pair = b
         return pair
+
+    def printChances(self, chooseNum):
+        print("First hand chance: " + str(Deck.handOneWins / math.comb(48, chooseNum)))
+        print("Second hand chance: " + str(Deck.handTwoWins / math.comb(48, chooseNum)))
+        print("Split chance: " + str(Deck.ties / math.comb(48, chooseNum)))
 
 
 
