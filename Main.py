@@ -89,6 +89,317 @@ class Deck:
         outcomesList = list(itertools.combinations(self.cards, numCards))
         return outcomesList
 
+    def runOutcomesTurn(self, handOneCards, handTwoCards, outcomesList):
+        # creating helper lists
+        for i in list(outcomesList):
+            handOneSuits = []
+            handOneViableCards = []
+            handOneValues = []
+            handTwoSuits = []
+            handTwoViableCards = []
+            handTwoValues = []
+            # populating the 7 card hand list
+            # something wrong here
+            for i in list(i):
+                handOneSuits.append(i.suit)
+                handOneValues.append(int(i.value))
+                handOneViableCards.append(i)
+                handTwoSuits.append(i.suit)
+                handTwoValues.append(int(i.value))
+                handTwoViableCards.append(i)
+            for a in list(handOneCards):
+                handOneSuits.append(a.suit)
+                handOneValues.append(int(a.value))
+                handOneViableCards.append(a)
+            for a in list(handTwoCards):
+                handTwoSuits.append(a.suit)
+                handTwoValues.append(int(a.value))
+                handTwoViableCards.append(a)
+
+
+
+            handOneRoyal = self.checkRoyalFlush(handOneSuits.copy(), handOneViableCards.copy())
+            handTwoRoyal = self.checkRoyalFlush(handTwoSuits.copy(), handTwoViableCards.copy())
+
+            # checking royal flush
+            winner = False
+            if (handOneRoyal == True and handTwoRoyal == False):
+                Deck.handOneWins += 1
+                winner = True
+            if (handOneRoyal == False and handTwoRoyal == True):
+                Deck.handTwoWins += 1
+                winner = True
+            if (handOneRoyal == True and handTwoRoyal == True):
+                Deck.ties += 1
+                winner = True
+
+            # checking straight flush
+            if (winner == False):
+                handOneSF = self.checkStraightFlush(handOneSuits.copy(), handOneValues.copy(),
+                                                    handOneViableCards.copy())
+                handTwoSF = self.checkStraightFlush(handTwoSuits.copy(), handTwoValues.copy(),
+                                                    handTwoViableCards.copy())
+                winner = False
+                if (handOneSF > handTwoSF):
+                    Deck.handOneWins += 1
+                    winner = True
+                if (handOneSF < handTwoSF):
+                    Deck.handTwoWins += 1
+                    winner = True
+                if (handOneSF > 0 and handTwoSF > 0 and handOneSF == handTwoSF):
+                    Deck.ties += 1
+                    winner = True
+
+                # checking quads
+                if (winner == False):
+                    handOneQuads = self.checkQuads(handOneValues.copy())
+                    handTwoQuads = self.checkQuads(handTwoValues.copy())
+                    winner = False
+                    if (handOneQuads > handTwoQuads):
+                        Deck.handOneWins += 1
+                        winner = True
+                    if (handOneQuads < handTwoQuads):
+                        Deck.handTwoWins += 1
+                        winner = True
+                    if (handOneQuads > 0 and handTwoQuads > 0 and handOneQuads == handTwoQuads):
+                        Deck.ties += 1
+                        winner = True
+
+                    # checking Full House
+                    if (winner == False):
+                        handOneFullHouse = self.checkFullHouse(handOneValues.copy())
+                        handTwoFullHouse = self.checkFullHouse(handTwoValues.copy())
+                        winner = False
+                        if (handOneFullHouse[0] == 0 and handTwoFullHouse[0] == 0):
+                            winner = False
+                        elif (handOneFullHouse[0] > handTwoFullHouse[0] and handOneFullHouse[1] != 0 and
+                              handTwoFullHouse[1] != 0):
+                            Deck.handOneWins += 1
+                            winner = True
+                        elif (handOneFullHouse[0] < handTwoFullHouse[0] and handOneFullHouse[1] != 0 and
+                              handTwoFullHouse[1] != 0):
+                            Deck.handTwoWins += 1
+                            winner = True
+                        elif (handOneFullHouse[0] == handTwoFullHouse[0]):
+                            if (handOneFullHouse[1] == 0 and handTwoFullHouse[1] == 0):
+                                winner = False
+                            elif (handOneFullHouse[1] > handTwoFullHouse[1]):
+                                Deck.handOneWins += 1
+                                winner = True
+                            elif (handOneFullHouse[1] < handTwoFullHouse[1]):
+                                Deck.handTwoWins += 1
+                                winner = True
+                            elif (handOneFullHouse[1] == handTwoFullHouse[1]):
+                                Deck.ties += 1
+                                winner = True
+
+                        # checking Flush
+                        if (winner == False):
+                            handOneFlush = self.checkFlush(handOneSuits.copy(), handOneViableCards.copy())
+                            handTwoFlush = self.checkFlush(handTwoSuits.copy(), handTwoViableCards.copy())
+                            winner = False
+                            if (handOneFlush == None and handTwoFlush != None):
+                                Deck.handTwoWins += 1
+                                winner = True
+                            elif (handTwoFlush == None and handOneFlush != None):
+                                Deck.handOneWins += 1
+                                winner = True
+                            elif (handOneFlush != None and handTwoFlush != None):
+                                tieFlushCards = 0
+                                handOneFlush.sort(reverse=True)
+                                handTwoFlush.sort(reverse=True)
+                                for i in range(0, 5):
+                                    if (handOneFlush[i] > handTwoFlush[i]):
+                                        Deck.handOneWins += 1
+                                        winner = True
+                                    elif (handTwoFlush[i] > handTwoFlush[i]):
+                                        Deck.handTwoWins += 1
+                                        winner = True
+                                    elif (handOneFlush[i] == handTwoFlush[i]):
+                                        tieFlushCards += 1
+                                if (tieFlushCards == 5):
+                                    Deck.ties += 1
+                                    winner = True
+
+                            # checking straight
+                            if (winner == False):
+                                handOneStraight = self.checkStraight(handOneValues.copy())
+                                handTwoStraight = self.checkStraight(handTwoValues.copy())
+                                winner = False
+                                if (handOneStraight == None and handTwoStraight != None):
+                                    Deck.handTwoWins += 1
+                                    winner = True
+                                elif (handTwoStraight == None and handOneStraight != None):
+                                    Deck.handOneWins += 1
+                                    winner = True
+                                elif (handOneStraight != None and handTwoStraight != None):
+                                    tieStraightCards = 0
+                                    handOneStraight.sort(reverse=True)
+                                    handTwoStraight.sort(reverse=True)
+                                    # print(handOneStraight)
+                                    # print(handTwoStraight)
+                                    # print("BREAK---------------")
+                                    for i in range(0, 5):
+                                        if (handOneStraight[i] > handTwoStraight[i]):
+                                            Deck.handOneWins += 1
+                                            winner = True
+                                        elif (handTwoStraight[i] > handTwoStraight[i]):
+                                            Deck.handTwoWins += 1
+                                            winner = True
+                                        elif (handOneStraight[i] == handTwoStraight[i]):
+                                            tieStraightCards += 1
+                                    if (tieStraightCards == 5):
+                                        Deck.ties += 1
+                                        winner = True
+
+                                # checking trips
+                                if (winner == False):
+                                    handOneTrips = self.checkTrips(handOneValues.copy())
+                                    handTwoTrips = self.checkTrips(handTwoValues.copy())
+                                    winner = False
+                                    if (handOneTrips > handTwoTrips):
+                                        Deck.handOneWins += 1
+                                        winner = True
+                                    if (handOneTrips < handTwoTrips):
+                                        Deck.handTwoWins += 1
+                                        winner = True
+                                    if (handOneTrips > 0 and handTwoTrips > 0 and handOneTrips == handTwoTrips):
+                                        handOneTripHand = handOneValues.copy()
+                                        handTwoTripHand = handOneValues.copy()
+                                        for i in range(0, 15):
+                                            if (handOneTripHand.count(i) == 3):
+                                                handOneTripHand.remove(i)
+                                            if (handTwoTripHand.count(i) == 3):
+                                                handTwoTripHand.remove(i)
+                                        handOneTripHand.sort(reverse=True)
+                                        handTwoTripHand.sort(reverse=True)
+                                        tripCounter = 0
+                                        for i in range(0, 2):
+                                            if (handOneTripHand[i] > handTwoTripHand[i]):
+                                                Deck.handOneWins += 1
+                                                winner = True
+                                            elif (handTwoTripHand[i] > handOneTripHand[i]):
+                                                Deck.handTwoWins += 1
+                                                winner = True
+                                            elif (handOneTripHand[i] == handTwoTripHand[i]):
+                                                tripCounter += 1
+                                        if (tripCounter == 2):
+                                            Deck.ties += 1
+                                            winner = True
+
+                                    # checking two pair
+                                    if (winner == False):
+                                        handOneTwoPair = self.checkTwoPair(handOneValues.copy())
+                                        handTwoTwoPair = self.checkTwoPair(handTwoValues.copy())
+                                        winner = False
+                                        handOneWin = False
+                                        handTwoWin = False
+                                        if (handOneTwoPair[0] == 0 and handTwoTwoPair[0] == 0):
+                                            winner = False
+                                        elif (handOneTwoPair[0] > handTwoTwoPair[0]):
+                                            Deck.handOneWins += 1
+                                            winner = True
+                                            handOneWin = True
+                                        elif (handOneTwoPair[0] < handTwoTwoPair[0]):
+                                            Deck.handTwoWins += 1
+                                            winner = True
+                                            handTwoWin = True
+                                        elif (handOneTwoPair[0] == handTwoTwoPair[0]):
+                                            if (handOneTwoPair[1] == 0 and handTwoTwoPair[1] == 0):
+                                                winner = False
+                                            elif (handOneTwoPair[1] > handTwoTwoPair[1]):
+                                                Deck.handOneWins += 1
+                                                winner = True
+                                                handOneWin = True
+                                            elif (handOneTwoPair[1] < handTwoTwoPair[1]):
+                                                Deck.handTwoWins += 1
+                                                winner = True
+                                                handTwoWin = True
+                                            elif (handOneTwoPair[1] == handTwoTwoPair[1]):
+                                                handOneTwoPairHand = handOneValues.copy()
+                                                handTwoTwoPairHand = handTwoValues.copy()
+                                                handOneCounter = 0
+                                                handTwoCounter = 0
+                                                for i in range(15, 1, -1):
+                                                    if (handOneCounter <= 2):
+                                                        if handOneTwoPairHand.count(i) == 2:
+                                                            handOneCounter += 1
+                                                            handOneTwoPairHand.remove(i)
+                                                    if (handTwoCounter <= 2):
+                                                        if handTwoTwoPairHand.count(i) == 2:
+                                                            handTwoCounter += 1
+                                                            handTwoTwoPairHand.remove(i)
+                                                handOneTwoPairHand.sort(reverse=True)
+                                                handTwoTwoPairHand.sort(reverse=True)
+                                                if (handOneTwoPairHand[0] > handTwoTwoPairHand[0]):
+                                                    Deck.handOneWins += 1
+                                                    winner = True
+                                                    handOneWin = True
+                                                elif (handTwoTwoPairHand[0] > handOneTwoPairHand[0]):
+                                                    Deck.handTwoWins += 1
+                                                    winner = True
+                                                    handTwoWin = True
+                                                elif (handOneTwoPairHand[0] == handTwoTwoPairHand[0]):
+                                                    Deck.ties += 1
+                                                    winner = True
+
+                                        # checking pair
+                                        if (winner == False):
+                                            handOnePair = self.checkPair(handOneValues.copy())
+                                            handTwoPair = self.checkPair(handTwoValues.copy())
+                                            winner = False
+                                            handOneWin = False
+                                            handTwoWin = False
+                                            if (handOnePair > handTwoPair):
+                                                Deck.handOneWins += 1
+                                                winner = True
+                                                handOneWin = True
+                                            if (handOnePair < handTwoPair):
+                                                Deck.handTwoWins += 1
+                                                winner = True
+                                                handTwoWin = True
+                                            if (handOnePair > 0 and handTwoPair > 0 and handOnePair == handTwoPair):
+                                                handOnePairHand = handOneValues.copy()
+                                                handTwoPairHand = handTwoValues.copy()
+                                                pairCounter = 0
+                                                for i in range(15, 1, -1):
+                                                    if (handOnePairHand.count(i) == 2):
+                                                        handOnePairHand.remove(i)
+                                                    if (handTwoPairHand.count(i) == 2):
+                                                        handTwoPairHand.remove(i)
+                                                handOnePairHand.sort(reverse=True)
+                                                handTwoPairHand.sort(reverse=True)
+                                                for i in range(0, 3):
+                                                    if (handOnePairHand[i] > handTwoPairHand[i]):
+                                                        Deck.handOneWins += 1
+                                                        winner = True
+                                                        handOneWin = True
+                                                    elif (handTwoPairHand[i] > handOnePairHand[i]):
+                                                        Deck.handTwoWins += 1
+                                                        winner = True
+                                                        handTwoWin = True
+                                                    elif (handOnePairHand[i] == handTwoPairHand[i]):
+                                                        pairCounter += 1
+                                                if (pairCounter == 3):
+                                                    Deck.ties += 1
+                                                    winner = True
+
+                                            # checking high card
+                                            if (winner == False):
+                                                handOneValues.sort(reverse=True)
+                                                handTwoValues.sort(reverse=True)
+                                                highCardTie = 0
+                                                for i in range(0, 7):
+                                                    if (handOneValues[i] > handTwoValues[i]):
+                                                        Deck.handOneWins += 1
+                                                    elif (handTwoValues[i] > handOneValues[i]):
+                                                        Deck.handTwoWins += 1
+                                                    elif (handOneValues[i] == handTwoValues[i]):
+                                                        highCardTie += 1
+                                                if (highCardTie == 7):
+                                                    Deck.ties += 1
+        deck.printChances(44, 1)
+
     def runOutcomesFlop(self, handOneCards, handTwoCards, outcomesList):
         # creating helper lists
         for i in list(outcomesList):
@@ -398,7 +709,7 @@ class Deck:
                                                         highCardTie += 1
                                                 if (highCardTie == 7):
                                                     Deck.ties += 1
-        deck.printChances(2)
+        deck.printChances(45, 2)
 
 
 
@@ -715,7 +1026,7 @@ class Deck:
                                                         highCardTie += 1
                                                 if (highCardTie == 7):
                                                     Deck.ties += 1
-        deck.printChances(5)
+        deck.printChances(48, 5)
 
 
 
@@ -893,10 +1204,10 @@ class Deck:
                 pair = b
         return pair
 
-    def printChances(self, chooseNum):
-        print("First hand chance: " + str(Deck.handOneWins / math.comb(48, chooseNum)))
-        print("Second hand chance: " + str(Deck.handTwoWins / math.comb(48, chooseNum)))
-        print("Split chance: " + str(Deck.ties / math.comb(48, chooseNum)))
+    def printChances(self, numDeckCards, chooseNum):
+        print("First hand chance: " + str(Deck.handOneWins / math.comb(numDeckCards, chooseNum)))
+        print("Second hand chance: " + str(Deck.handTwoWins / math.comb(numDeckCards, chooseNum)))
+        print("Split chance: " + str(Deck.ties / math.comb(numDeckCards, chooseNum)))
 
 
 
@@ -965,6 +1276,16 @@ if (flop == "yes"):
         handOneCards = [handOneCardOne, handOneCardTwo, flopCardOne, flopCardTwo, flopCardThree]
         handTwoCards = [handTwoCardOne, handTwoCardTwo, flopCardOne, flopCardTwo, flopCardThree]
         deck.runOutcomesFlop(handOneCards, handTwoCards, flopOutcomes)
+    if (turn == "yes"):
+        turnCardValue = tempCard.getCardValue()
+        turnCardSuit = tempCard.getCardSuit()
+        turnCard = Card(turnCardValue, turnCardSuit)
+        deck.removeDealtCard(turnCard)
+        turnOutcomes = deck.calculateOutcomes(1)
+        handOneCards = [handOneCardOne, handOneCardTwo, flopCardOne, flopCardTwo, flopCardThree, turnCard]
+        handTwoCards = [handTwoCardOne, handTwoCardTwo, flopCardOne, flopCardTwo, flopCardThree, turnCard]
+        deck.runOutcomesTurn(handOneCards, handTwoCards, turnOutcomes)
+
 
 
 
