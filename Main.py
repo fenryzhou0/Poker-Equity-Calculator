@@ -767,7 +767,8 @@ class Deck:
                 Deck.ties += 1
                 tie = True
                 winner = True
-
+            #if (winner == True):
+                #print("Royal")
             #checking straight flush
             if (winner == False):
                 handOneSF = self.checkStraightFlush(handOneSuits.copy(), handOneValues.copy(), handOneViableCards.copy())
@@ -785,7 +786,8 @@ class Deck:
                     Deck.ties += 1
                     winner = True
                     tie = True
-
+                #if (winner == True):
+                    #print("SF")
                 #checking quads
                 if (winner == False):
                     handOneQuads = self.checkQuads(handOneValues.copy())
@@ -803,7 +805,8 @@ class Deck:
                         Deck.ties += 1
                         winner = True
                         tie = True
-
+                    #if (winner == True):
+                        #print("Quad")
                     #checking Full House
                     if (winner == False):
                         handOneFullHouse = self.checkFullHouse(handOneValues.copy())
@@ -834,7 +837,8 @@ class Deck:
                                 Deck.ties += 1
                                 winner = True
                                 tie = True
-
+                        #if (winner == True):
+                            #print("Full House")
                         #checking Flush
                         if (winner == False):
                             handOneFlush = self.checkFlush(handOneSuits.copy(), handOneViableCards.copy())
@@ -867,7 +871,8 @@ class Deck:
                                     Deck.ties += 1
                                     winner = True
                                     tie = True
-
+                            #if (winner == True):
+                                #print("Flush")
                             #checking straight
                             if (winner == False):
                                 handOneStraight = self.checkStraight(handOneValues.copy())
@@ -903,7 +908,8 @@ class Deck:
                                         Deck.ties += 1
                                         winner = True
                                         tie = True
-
+                                #if (winner == True):
+                                    #print("Straight")
                                 #checking trips
                                 if (winner == False):
                                     handOneTrips = self.checkTrips(handOneValues.copy())
@@ -952,8 +958,8 @@ class Deck:
                                             winner = True
                                             tie = True
 
-
-
+                                    #if (winner == True):
+                                        #print("Trips")
                                     #checking two pair
                                     if (winner == False):
                                         handOneTwoPair = self.checkTwoPair(handOneValues.copy())
@@ -1017,8 +1023,8 @@ class Deck:
                                                     Deck.ties += 1
                                                     winner = True
                                                     tie = True
-
-
+                                        #if (winner == True):
+                                            #print("Two Pair")
                                         #checking pair
                                         if (winner == False):
                                             handOnePair = self.checkPair(handOneValues.copy())
@@ -1066,8 +1072,8 @@ class Deck:
                                                     Deck.ties += 1
                                                     winner = True
                                                     tie = True
-
-
+                                            #if (winner == True):
+                                                #print("Pair")
                                             #checking high card
                                             if (winner == False):
                                                 handOneValues.sort(reverse = True)
@@ -1085,13 +1091,14 @@ class Deck:
                                                 if (highCardTie == 7):
                                                     Deck.ties += 1
                                                     tie = True
-            if (handOneWin == True):
-                for c in handOneViableCards:
-                    c.printCard()
-                print("Hand Break---")
-                for c in handTwoViableCards:
-                    c.printCard()
-                print("NEW HAND----------------")
+                                                #print("high card")
+            #if (handOneWin == True and handTwoWin == True):
+                #for c in handOneViableCards:
+                    #c.printCard()
+                #print("Hand Break---")
+                #for c in handTwoViableCards:
+                    #c.printCard()
+                #print("NEW HAND----------------")
         deck.printChances(48, 5)
 
 
